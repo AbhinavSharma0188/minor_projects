@@ -1,9 +1,9 @@
+import cors from 'cors';
 import dotenv from "dotenv";
 import express from "express";
 import connectdb from "./config/connectdb.js";
-import router from "./routes/receipe.js";
-import cors from 'cors';
-import { userSignUp } from "./controller/userController.js";
+import recipeRouter from "./routes/receipe.js";
+import userRouter from "./routes/user.js";
 
 
 dotenv.config();   // load env first
@@ -11,8 +11,8 @@ dotenv.config();   // load env first
 const app = express();
 app.use(express.json())
 app.use(cors());
-app.use('/recipe',router)//get recipes
-app.use('/',userSignUp);
+app.use('/api',userRouter)
+app.use('/recipe',recipeRouter)//get recipes
 connectdb();
 
 

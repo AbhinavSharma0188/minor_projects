@@ -2,6 +2,7 @@ import bcrypt from "bcrypt";
 import jwt from "jsonwebtoken";
 import dotenv from "dotenv";
 import User from "../model/Usermodel.js";
+
 dotenv.config();
 export const userSignUp=async(req,res)=>{
     const {email,password}=req.body;
@@ -24,7 +25,24 @@ export const userSignUp=async(req,res)=>{
 
     
 }
-export const userLogin=(req,res)=>{
+export const userLogin= async(req,res)=>{
+     const {email,password}=req.body;
+    if(!email || !password){
+        return res.status(400).json({message:"All fields are required"})
+    }
+    const user= await User.findOne({email});
+    if(user&& await bcrypt.compare(password,user.password))
+    {
+        const token=jwt.sign({
+        email,id:user._id
+    },process.env.JWT_SECRET,{expiresIn:"15d"}
+    );
+    res.status(201).json({token,user})
+    }
+    else{
+        return res.status(400).json({message:"Invalid credentials"})
+
+    }
     
 }
 export const getUser=(req,res)=>{
