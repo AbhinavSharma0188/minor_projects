@@ -1,6 +1,14 @@
+
 import React from 'react'
+import Model from './Model';
+import { useState } from 'react';
 
 const Navbar = () => {
+  const [isOpen,setIsOpen]=useState(false);
+  const checkLogin=()=>{
+    setIsOpen(true)
+
+  }
   return (
   <>
   <header>
@@ -9,10 +17,11 @@ const Navbar = () => {
         <li>Home</li>
         <li>MY Recipes</li>
         <li>Favorites</li>
-        <li>Login</li>
+        <li onClick={checkLogin}>Login</li>
        
     </ul>
   </header>
+  {isOpen && <Model onClose={()=>{setIsOpen(false)}}/>}
   </>
   )
 }
